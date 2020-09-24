@@ -22,10 +22,10 @@ spec:
         volumeMounts:
           - name: html-volume
             mountPath: /usr/share/nginx/html
-        volumes:
-        - name: html-volume
-          configMap:
-            name: store-html
+      volumes:
+      - name: html-volume
+        configMap:
+          name: store-html
 ---
 apiVersion: v1
 kind: Service
