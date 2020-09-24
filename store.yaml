@@ -51,7 +51,5 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          service:
-            name: store-nginx-service
-            port:
-              number: 80
+          servicename: store-nginx-service
+          serviceport: 80
