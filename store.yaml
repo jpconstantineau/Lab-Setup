@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-nginx
+  labels:
+    app: store-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: store-nginx
+  template:
+    metadata:
+      labels:
+        app: store-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: html-volume
+            mountPath: /usr/share/nginx/html
+        volumes:
+        - name: html-volume
+          configMap:
+            name: store-html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-nginx-service
+spec:
+  selector:
+    app: store-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: store-nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: store-nginx-service
+            port:
+              number: 80
