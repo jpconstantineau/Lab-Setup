@@ -40,11 +40,11 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
-rules:
-- host: "menu.jpconstantineau.com"
-  http:
-    paths:
-    - path: /
-      backend:
-      - serviceName: heimdall-service
-        servicePort: 80    
+  rules:
+  - host: "menu.jpconstantineau.com"
+    http:
+      paths:
+      - path: /
+        backend:
+        - serviceName: heimdall-service
+          servicePort: 80    
