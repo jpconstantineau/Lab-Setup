@@ -3,3 +3,4 @@ k3s kubectl get node
 
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 helm version
+sudo apt install nfs-common
