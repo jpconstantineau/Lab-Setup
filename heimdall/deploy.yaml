@@ -54,6 +54,8 @@ spec:
       - name: heimdall-data
         persistentVolumeClaim:
           claimName: heimdall-pv-claim
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
 ---
 apiVersion: v1
 kind: Service
