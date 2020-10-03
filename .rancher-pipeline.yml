@@ -1,0 +1,5 @@
+stages:
+- name: Heimdall
+  steps:
+  - applyYamlConfig:
+      path: ./heimdall/deploy.yaml
