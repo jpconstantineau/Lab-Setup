@@ -4,5 +4,5 @@
 2 - Run this script
 
 ```
-curl -sfL https://get.k3s.io | sh -
+sudo curl -sfL https://raw.githubusercontent.com/jpconstantineau/Lab-Setup/master/cluster/setup.sh | sh -
 ```
