@@ -47,6 +47,7 @@ spec:
         image: linuxserver/heimdall
         ports:
         - containerPort: 80
+        - containerPort: 443
         volumeMounts:
         - name: heimdall-data
           mountPath: /config
