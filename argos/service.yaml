@@ -5,8 +5,8 @@ metadata:
   labels:
     app: argocd
   annotations:
-    - kubernetes.io/ingress.class: "traefik"
-    - ingress.kubernetes.io/ssl-redirect: "false"
+    kubernetes.io/ingress.class: "traefik"
+    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
   - host: "cicd.jpconstantineau.com"
