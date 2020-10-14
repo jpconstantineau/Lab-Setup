@@ -7,6 +7,14 @@
 sudo curl -sfL https://raw.githubusercontent.com/jpconstantineau/Lab-Setup/master/cluster/setup.sh | sh -
 ```
 
+
 3. Reboot
 
 Your server will now have a k3s cluster running on it.
+
+
+alternately for a docker rancher setup:
+
+```
+sudo curl -sfL https://raw.githubusercontent.com/jpconstantineau/Lab-Setup/master/cluster/setup-docker.sh | sh -
+```
