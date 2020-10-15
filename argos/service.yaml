@@ -9,8 +9,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: "cicd.jpconstantineau.com"
-    http:
+    - http:
       paths:
       - path: /
         backend:
