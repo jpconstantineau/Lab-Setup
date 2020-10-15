@@ -10,8 +10,8 @@ metadata:
 spec:
   rules:
   - http:
-    paths:
-    - path: /
-      backend:
-        serviceName: argocd-server
-        servicePort: 80               
+      paths:
+      - path: /
+        backend:
+          serviceName: argocd-server
+          servicePort: 80               
