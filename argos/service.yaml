@@ -9,9 +9,10 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - http:
+  - host: "k3s-a"
+    http:
       paths:
       - path: /
         backend:
           serviceName: argocd-server
-          servicePort: 80               
+          servicePort: 80           
