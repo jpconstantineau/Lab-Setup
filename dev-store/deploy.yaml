@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: dev-store-volume-pv
+  namespace: dev-store
 spec:
   capacity:
     storage: 10Gi
@@ -19,6 +20,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: dev-store-volume-pv-claim
+  namespace: dev-store
 spec:
   accessModes:
     - ReadWriteMany
@@ -30,6 +32,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dev-store-nginx
+  namespace: dev-store
   labels:
     app: dev-store-nginx
 spec:
@@ -59,6 +62,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dev-store-nginx-service
+  namespace: dev-store
 spec:
   selector:
     app: dev-store-nginx
@@ -70,6 +74,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: dev-store-nginx-ingress
+  namespace: dev-store
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
