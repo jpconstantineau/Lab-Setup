@@ -6,7 +6,7 @@ spec:
   capacity:
     storage: 10Gi
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   nfs:
     path: /Pool/KubeVolumes/prod-store-nginx
     server: 192.168.1.192
@@ -21,7 +21,7 @@ metadata:
   name: prod-store-volume-pv-claim
 spec:
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
