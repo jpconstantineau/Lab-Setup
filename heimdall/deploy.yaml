@@ -85,4 +85,4 @@ spec:
         - path: /
           backend:
             serviceName: heimdall-service
-            servicePort: 443 
+            servicePort: 80 
