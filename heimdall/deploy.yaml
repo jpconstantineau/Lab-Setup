@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
       - name: heimdall
-        image: linuxserver/heimdall
+        image: linuxserver/heimdall:version-2.2.2
         ports:
         - containerPort: 80
         - containerPort: 443
