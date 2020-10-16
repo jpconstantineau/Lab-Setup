@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prod-store-volume-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /Pool/KubeVolumes/prod-store-nginx
+    server: 192.168.1.192
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: prod-store-volume-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prod-store-volume-pv-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-store-nginx
+  labels:
+    app: prod-store-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: prod-store-nginx
+  template:
+    metadata:
+      labels:
+        app: prod-store-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: prod-store-volume
+            mountPath: /usr/share/nginx/html
+      volumes:
+      - name: prod-store-volume
+        persistentVolumeClaim:
+          claimName: prod-store-volume-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-store-nginx-service
+spec:
+  selector:
+    app: prod-store-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: prod-store-nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - host: "prod-store.jpconstantineau.com"
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: prod-store-nginx-service
+            servicePort: 80 
+  - host: "store.jpconstantineau.com"
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: prod-store-nginx-service
+            servicePort: 80 
