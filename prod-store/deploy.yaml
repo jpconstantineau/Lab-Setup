@@ -12,14 +12,14 @@ spec:
     server: 192.168.1.192
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: prod-store
+    namespace: default
     name: prod-store-volume-pv-claim
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: prod-store-volume-pv-claim
-  namespace: prod-store
+  namespace: default
 spec:
   accessModes:
     - ReadWriteOnce
@@ -31,7 +31,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prod-store-nginx
-  namespace: prod-store
+  namespace: default
   labels:
     app: prod-store-nginx
 spec:
@@ -61,7 +61,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prod-store-nginx-service
-  namespace: prod-store
+  namespace: default
 spec:
   selector:
     app: prod-store-nginx
@@ -73,7 +73,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: prod-store-nginx-ingress
-  namespace: prod-store
+  namespace: default
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
