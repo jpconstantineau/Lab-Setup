@@ -6,7 +6,7 @@ spec:
   capacity:
     storage: 10Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce 
   nfs:
     path: /Pool/KubeVolumes/dev-store-nginx
     server: 192.168.1.192
@@ -22,7 +22,7 @@ metadata:
   namespace: dev-store
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
