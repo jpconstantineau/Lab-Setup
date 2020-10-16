@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dev-store-volume-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /Pool/KubeVolumes/dev-store-nginx
+    server: 192.168.1.192
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: dev-store-volume-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-store-volume-pv-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-store-nginx
+  labels:
+    app: dev-store-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-store-nginx
+  template:
+    metadata:
+      labels:
+        app: dev-store-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: dev-store-volume
+            mountPath: /usr/share/nginx/html
+      volumes:
+      - name: dev-store-volume
+        persistentVolumeClaim:
+          claimName: dev-store-volume-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-store-nginx-service
+spec:
+  selector:
+    app: dev-store-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: dev-store-nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - host: "dev-store.jpconstantineau.com"
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: dev-store-nginx-service
+            servicePort: 80 
