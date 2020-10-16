@@ -2,7 +2,6 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: prod-store-volume-pv
-  namespace: prod-store
 spec:
   capacity:
     storage: 10Gi
@@ -13,7 +12,7 @@ spec:
     server: 192.168.1.192
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
+    namespace: prod-store
     name: prod-store-volume-pv-claim
 ---
 apiVersion: v1
