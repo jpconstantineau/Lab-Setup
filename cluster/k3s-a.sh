@@ -14,8 +14,8 @@ sudo chmod +x /usr/local/bin/argocd
 
 kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2
 
-argocd login --insecure --grpc-web k3s-a
+# argocd login --insecure --grpc-web k3s-a
 
-argocd account update-password
+# argocd account update-password
 
-argocd app create heimdall --repo https://github.com/jpconstantineau/Lab-Setup.git --path heimdall --dest-server https://kubernetes.default.svc --dest-namespace default
+# argocd app create heimdall --repo https://github.com/jpconstantineau/Lab-Setup.git --path heimdall --dest-server https://kubernetes.default.svc --dest-namespace default
