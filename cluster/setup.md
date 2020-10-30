@@ -10,6 +10,12 @@ sudo curl -sfL https://raw.githubusercontent.com/jpconstantineau/Lab-Setup/maste
 
 3. Reboot
 
+```
+sudo curl -sfL https://raw.githubusercontent.com/jpconstantineau/Lab-Setup/master/cluster/k3s-a.sh | sh -
+```
+```
+sudo curl -sfL https://raw.githubusercontent.com/jpconstantineau/Lab-Setup/master/cluster/k3s-1.sh | sh -
+```
 Your server will now have a k3s cluster running on it.
 
 

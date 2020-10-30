@@ -9,7 +9,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: "k3s-a"
+  - host: "k3s-m"
     http:
       paths:
       - path: /
