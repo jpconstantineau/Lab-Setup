@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nodered-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /Pool/KubeVolumes/nodered
+    server: 192.168.1.192
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nodered-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nodered-pv-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodered-deployment
+  labels:
+    app: nodered
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodered
+  template:
+    metadata:
+      labels:
+        app: nodered
+    spec:
+      containers:
+      - name: nodered
+        image: nodered/node-red:latest
+        volumeMounts:
+        - name: nodered-data
+          mountPath: /data
+        env:
+        - name: TZ
+          value: America/Regina
+        ports:
+        - containerPort: 1880
+      volumes:
+      - name: nodered-data
+        persistentVolumeClaim:
+          claimName: nodered-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodered-service
+  namespace: default
+spec:
+  selector:
+    app: nodered
+  ports:
+    - protocol: TCP
+      port: 1880
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nodered-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - host: "nodered.jpconstantineau.com"
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: nodered-service
+            servicePort: 1880 
