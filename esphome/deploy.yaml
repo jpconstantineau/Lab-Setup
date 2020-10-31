@@ -1,24 +1,24 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: heimdall-pv
+  name: esphome-pv
 spec:
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /Pool/KubeVolumes/heimdall
+    path: /Pool/KubeVolumes/esphome
     server: storage
   persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: default
-    name: heimdall-pv-claim
+    name: esphome-pv-claim
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: heimdall-pv-claim
+  name: esphome-pv-claim
 spec:
   accessModes:
     - ReadWriteMany
@@ -29,60 +29,60 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: heimdall-deployment
+  name: esphome-deployment
   labels:
-    app: heimdall
+    app: esphome
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: heimdall
+      app: esphome
   template:
     metadata:
       labels:
-        app: heimdall
+        app: esphome
     spec:
       containers:
-      - name: heimdall
-        image: linuxserver/heimdall:version-2.2.2
-        ports:
-        - containerPort: 80
-        - containerPort: 443
+      - name: esphome
+        image: esphome/esphome
         volumeMounts:
-        - name: heimdall-data
+        - name: esphome-data
           mountPath: /config
+        env:
+        - name: ESPHOME_DASHBOARD_USE_PING
+          value: true
+        ports:
+        - containerPort: 6052
       volumes:
-      - name: heimdall-data
+      - name: esphome-data
         persistentVolumeClaim:
-          claimName: heimdall-pv-claim
+          claimName: esphome-pv-claim
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: heimdall-service
+  name: esphome-service
+  namespace: default
 spec:
   selector:
-    app: heimdall
+    app: esphome
   ports:
     - protocol: TCP
-      port: 80
-      name: http 
-    - protocol: TCP
-      port: 443  
-      name: https        
+      port: 6052
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: heimdall-ingress
+  name: esphome-ingress
+  namespace: default
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
   rules:
-  - host: "menu.jpconstantineau.com"
+  - host: "esphome.jpconstantineau.com"
     http:
       paths:
         - path: /
           backend:
-            serviceName: heimdall-service
-            servicePort: 80 
+            serviceName: esphome-service
+            servicePort: 6052 

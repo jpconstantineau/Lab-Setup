@@ -9,7 +9,7 @@ spec:
     - ReadWriteOnce
   nfs:
     path: /Pool/KubeVolumes/prod-store-nginx
-    server: 192.168.1.192
+    server: storage
   persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: default
