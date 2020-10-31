@@ -48,9 +48,6 @@ spec:
         volumeMounts:
         - name: esphome-data
           mountPath: /config
-        env:
-        - name: ESPHOME_DASHBOARD_USE_PING
-          value: true
         ports:
         - containerPort: 6052
       volumes:
