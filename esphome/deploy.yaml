@@ -42,6 +42,7 @@ spec:
       labels:
         app: esphome
     spec:
+      hostNetwork: true
       containers:
       - name: esphome
         image: esphome/esphome
