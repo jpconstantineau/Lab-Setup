@@ -1,9 +1,14 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mosquitto
+  name: mosquitto-deployment
+  labels:
+    app: mosquitto
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
   template:
     metadata:
       labels:
@@ -21,7 +26,7 @@ spec:
         - containerPort: 9001
         - containerPort: 8883
         volumeMounts:
-        - name: mosquitto
+        - name: mosquitto-config
           mountPath: /srv/mqtt/config
         - name: localtime
           mountPath: /etc/localtime
@@ -30,7 +35,7 @@ spec:
         - name: mosquitto-log
           mountPath: /srv/mqtt/log
       volumes:
-      - name: mosquitto
+      - name: mosquitto-config
         persistentVolumeClaim:
           claimName: mosquitto-config-pvc
       - name: mosquitto-data
