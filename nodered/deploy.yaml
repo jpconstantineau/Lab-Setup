@@ -42,9 +42,9 @@ spec:
       labels:
         app: nodered
     spec:
+      hostNetwork: true
       containers:
       - name: nodered
-        hostNetwork: true
         image: nodered/node-red:latest
         volumeMounts:
         - name: nodered-data

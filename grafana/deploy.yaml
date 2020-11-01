@@ -42,9 +42,9 @@ spec:
       labels:
         app: grafana
     spec:
+      hostNetwork: true
       containers:
       - name: grafana
-        hostNetwork: true
         image: grafana/grafana
         volumeMounts:
         - name: grafana-data

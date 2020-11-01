@@ -42,9 +42,9 @@ spec:
       labels:
         app: home-assistant
     spec:
+      hostNetwork: true
       containers:
       - name: home-assistant
-        hostNetwork: true
         image: homeassistant/home-assistant:stable
         volumeMounts:
         - name: home-assistant-data

@@ -42,9 +42,9 @@ spec:
       labels:
         app: influxdb
     spec:
+      hostNetwork: true
       containers:
       - name: influxdb
-        hostNetwork: true
         image: influxdb/influxdb
         volumeMounts:
         - name: influxdb-data

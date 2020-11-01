@@ -14,10 +14,10 @@ spec:
       labels:
         app: mosquitto
     spec:
+      hostNetwork: true
       containers:
       - name: mosquitto
         image: toke/mosquitto
-        hostNetwork: true
         resources:
           limits:
             cpu: 0.5
