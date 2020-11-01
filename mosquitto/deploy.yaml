@@ -17,7 +17,7 @@ spec:
       containers:
       - name: mosquitto
         image: toke/mosquitto
-        imagePullPolicy: Always
+        hostNetwork: true
         resources:
           limits:
             cpu: 0.5

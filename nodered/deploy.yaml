@@ -44,6 +44,7 @@ spec:
     spec:
       containers:
       - name: nodered
+        hostNetwork: true
         image: nodered/node-red:latest
         volumeMounts:
         - name: nodered-data
