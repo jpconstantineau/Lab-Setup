@@ -1,0 +1,163 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mosquitto
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+      - name: mosquitto
+        image: toke/mosquitto
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 0.5
+            memory: 500Mi
+        ports:
+        - containerPort: 9001
+        - containerPort: 8883
+        volumeMounts:
+        - name: mosquitto
+          mountPath: /srv/mqtt/config
+        - name: localtime
+          mountPath: /etc/localtime
+        - name: mosquitto-data
+          mountPath: /srv/mqtt/data
+        - name: mosquitto-log
+          mountPath: /srv/mqtt/log
+      volumes:
+      - name: mosquitto
+        persistentVolumeClaim:
+          claimName: mosquitto-config-pvc
+      - name: mosquitto-data
+        persistentVolumeClaim:
+          claimName: mosquitto-data-pvc
+      - name: mosquitto-log
+        persistentVolumeClaim:
+          claimName: mosquitto-log-pvc
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mosquitto-service
+  labels:
+    app: mosquitto
+    kubernetes.io/name: "mosquitto"
+spec:
+  selector:
+    app: mosquitto
+  ports:
+  - name: mosquitto
+    port: 1883
+  - name: mosquitto-web
+    port: 80
+    targetPort: 9001
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mosquitto-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - host: mosquitto.jpconstantineau.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: mosquitto
+          servicePort: 80
+---
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: mosquitto-config-pv
+  spec:
+    capacity:
+      storage: 15Mi
+    accessModes:
+      - ReadOnlyMany
+    nfs:
+      path: /Pool/KubeVolumes/mosquitto/config
+      server: 192.168.1.192
+      claimRef:
+    persistentVolumeReclaimPolicy: Retain
+    claimRef:
+      namespace: default
+      name: mosquitto-config-pvc
+---
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: mosquitto-data-pv
+  spec:
+    capacity:
+      storage: 50Mi
+    accessModes:
+      - ReadWriteOnce
+    nfs:
+      path: /Pool/KubeVolumes/mosquitto/data
+      server: 192.168.1.192
+    persistentVolumeReclaimPolicy: Retain
+    claimRef:
+      namespace: default
+      name: mosquitto-data-pvc
+---
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: mosquitto-log-pv
+  spec:
+    capacity:
+      storage: 25Mi
+    accessModes:
+      - ReadWriteOnce
+    nfs:
+      path: /Pool/KubeVolumes/mosquitto/log
+      server: 192.168.1.192
+    persistentVolumeReclaimPolicy: Retain
+    claimRef:
+      namespace: default
+      name: mosquitto-log-pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mosquitto-config-pvc
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 15Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mosquitto-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mosquitto-log-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 25Mi
