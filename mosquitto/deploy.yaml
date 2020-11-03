@@ -17,10 +17,11 @@ spec:
       hostNetwork: true
       containers:
       - name: mosquitto
+        nodeName: k3s-2
         image: toke/mosquitto
         resources:
           limits:
-            cpu: 0.5
+            cpu: 1
             memory: 500Mi
         ports:
         - containerPort: 9001
