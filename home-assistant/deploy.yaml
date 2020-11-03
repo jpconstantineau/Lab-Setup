@@ -43,6 +43,8 @@ spec:
         app: home-assistant
     spec:
       hostNetwork: true
+      nodeSelector:
+        hostname: k3s-2
       containers:
       - name: home-assistant
         image: homeassistant/home-assistant:stable
