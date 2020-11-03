@@ -45,7 +45,6 @@ spec:
       hostNetwork: true
       containers:
       - name: home-assistant
-        nodeName: k3s-2
         image: homeassistant/home-assistant:stable
         resources:
           limits:

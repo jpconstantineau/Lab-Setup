@@ -17,7 +17,6 @@ spec:
       hostNetwork: true
       containers:
       - name: mosquitto
-        nodeName: k3s-2
         image: toke/mosquitto
         resources:
           limits:
