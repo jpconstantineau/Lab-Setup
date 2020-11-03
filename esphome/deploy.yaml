@@ -34,6 +34,8 @@ metadata:
     app: esphome
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: esphome
@@ -43,9 +45,18 @@ spec:
         app: esphome
     spec:
       hostNetwork: true
+      nodeSelector:
+        k3s.io/hostname: k3s-2
       containers:
       - name: esphome
         image: esphome/esphome
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            cpu: 1
+            memory: 500Mi
         volumeMounts:
         - name: esphome-data
           mountPath: /config
