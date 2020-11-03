@@ -18,7 +18,7 @@ spec:
     spec:
       hostNetwork: true
       nodeSelector:
-        hostname: k3s-2
+        k3s.io/hostname: k3s-2
       containers:
       - name: mosquitto
         image: toke/mosquitto
