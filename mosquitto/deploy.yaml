@@ -60,7 +60,7 @@ spec:
       - ReadOnlyMany
     nfs:
       path: /Pool/KubeVolumes/mosquitto-config
-      server: 192.168.1.192
+      server: 192.168.1.50
       claimRef:
     persistentVolumeReclaimPolicy: Retain
     claimRef:
@@ -78,7 +78,7 @@ spec:
       - ReadWriteOnce
     nfs:
       path: /Pool/KubeVolumes/mosquitto-data
-      server: 192.168.1.192
+      server: 192.168.1.50
     persistentVolumeReclaimPolicy: Retain
     claimRef:
       namespace: default
@@ -95,7 +95,7 @@ spec:
       - ReadWriteOnce
     nfs:
       path: /Pool/KubeVolumes/mosquitto-log
-      server: 192.168.1.192
+      server: 192.168.1.50
     persistentVolumeReclaimPolicy: Retain
     claimRef:
       namespace: default
