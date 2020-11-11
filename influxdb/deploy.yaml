@@ -43,6 +43,8 @@ spec:
         app: influxdb
     spec:
       hostNetwork: true
+      nodeSelector:
+        k3s.io/hostname: k3s-2
       containers:
       - name: influxdb
         image: influxdb/influxdb
