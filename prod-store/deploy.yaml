@@ -46,9 +46,16 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: ghcr.io/linuxserver/nginx
         ports:
         - containerPort: 80
+        env:
+        - name: TZ
+          value: America/Regina
+        - name: PUID
+          value: 1000
+        - name: PGID
+          value: 1000          
         volumeMounts:
           - name: prod-store-volume
             mountPath: /usr/share/nginx/html
