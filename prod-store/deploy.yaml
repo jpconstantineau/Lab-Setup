@@ -58,7 +58,7 @@ spec:
           value: "1000"          
         volumeMounts:
           - name: prod-store-volume
-            mountPath: /config
+            mountPath: /config/html
       volumes:
       - name: prod-store-volume
         persistentVolumeClaim:
