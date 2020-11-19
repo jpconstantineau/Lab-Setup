@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: ghcr.io/linuxserver/nginx
+        image: nginx:1.14.2
         ports:
         - containerPort: 80
         env:
@@ -58,7 +58,7 @@ spec:
           value: "1000"          
         volumeMounts:
           - name: prod-store-volume
-            mountPath: /config/html
+            mountPath: /usr/share/nginx/html
       volumes:
       - name: prod-store-volume
         persistentVolumeClaim:
