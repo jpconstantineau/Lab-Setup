@@ -58,7 +58,7 @@ spec:
           value: "1000"          
         volumeMounts:
           - name: prod-store-volume
-            mountPath: /usr/share/nginx/html
+            mountPath: /config
       volumes:
       - name: prod-store-volume
         persistentVolumeClaim:
